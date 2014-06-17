@@ -1,7 +1,8 @@
-﻿using System;
-using System.IO;
-using CLAP;
+﻿using CLAP;
 using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
+using System;
+using System.IO;
 
 namespace AzzySync {
     class ConsoleAzzySync {
@@ -17,16 +18,20 @@ namespace AzzySync {
 
         [Verb(Description=@"Performs a one way sync of files from a local folder to an Azure blob storage container.")]
         public static void Sync(
-            [Description("Path of local folder to sync to blob storage.")] 
+            [Description("Path of local folder to sync to blob storage.")]
             string localPath
             
             , 
-            [Description("Name of the blob storage container.")] 
+            [Description("Name of the blob storage container.")]
             string containerName
             
             , 
-            [Description("Connection string for the Azure blob storage account."), DefaultValue(@"UseDevelopmentStorage=true")] 
-            string storageConnectionString
+            [Description("Account name for the Azure blob storage account.")]
+            string accountName
+
+            ,
+            [Description("Account key for the Azure blob storage account.")]
+            string accountKey
             
             , 
             [Description("Forces re-upload all files from local dir to blob storage. This bypasses the hash calculation/check to see if a file has changed.")]
@@ -38,7 +43,8 @@ namespace AzzySync {
 
                 localPath = ResolveLocalDir(localPath);
 
-                var blobClient = CloudStorageAccount.Parse(storageConnectionString).CreateCloudBlobClient();
+                var cloudStorageAccount = new CloudStorageAccount(new StorageCredentials(accountName, accountKey), true);
+                var blobClient = cloudStorageAccount.CreateCloudBlobClient();
                 var container = blobClient.GetContainerReference(containerName);
                 var syncer = new SyncToBlobStorage(blobClient, new DefaultMIMETypeMapper(), new SyncOptions{ ForceReupload = forceReupload });
                 syncer.Sync(container, localPath);

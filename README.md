@@ -3,23 +3,20 @@ AzzySync
 
 Command line tool to sync local folders with Azure blob storage. Right now this just does a one-way sync from a local folder into an Azure blob storage container.
 
-Forked by: sebastianbk
+Update from original repo (June 17, 2014)
+========
+
+After constantly getting the *No valid combination of account information found* error, I forked to this to update the way of connecting to Azure blob storage. This also means that this client will always run over HTTPS.
 
 Examples
 ========
 
-These examples work in a PowerShell console, but you can run these with very little modification in plain windows console.
+This example works in a PowerShell console:
 
- 1. Sync local dir, c:\static-content\images\ to Azure Development Storage Emulator (AzzySync defaults to storage emulator if no connection string is provided): 
+ 1. Sync C:\Misc\Screenshot\ to Azure blob storage: 
     
     ```PowerShell
-    .\AzzySync.exe s /containerName:images /localPath:"C:\static-content\images\"
-    ```
-
- 2. Sync c:\static-content\images\ to Azure blob storage: 
-    
-    ```PowerShell
-    .\AzzySync.exe s /containerName:images /localPath:"C:\static-content\images\" /storageconnectionstring:"DefaultEndPointsProtocol=YOUR_CHOICE_OF_HTTP_OR_HTTPS;AccountName=YOUR_STORAGE_ACCOUNT_NAME;AccountKey=YOUR_STORAGE_ACCOUNT_KEY;"
+    .\AzzySync.exe s /containerName:screenshots /localPath:"C:\Misc\Screenshot\" /accountname:"YOUR_STORAGE_ACCOUNT_NAME" /accountkey:"YOUR_STORAGE_ACCOUNT_KEY"
     ```
 
 Get command line help
@@ -31,9 +28,11 @@ Get command line help
 Output: 
 ```
    sync|s: Performs a one way sync of files from a local folder to an Azure blob storage container.
-        /c /containername           : Name of the blob storage container. (String)
-        /l /localpath               : Path of local folder to sync to blob storage. (String)
-        /s /storageconnectionstring : Connection string for the Azure blob storage account. (String) (Default = UseDevelopmentStorage=true)
+        /accountkey    : Account key for the Azure blob storage account. (String)
+        /accountname   : Account name for the Azure blob storage account. (String)
+        /containername : Name of the blob storage container. (String)
+        /forcereupload : Forces re-upload all files from local dir to blob storage. This bypasses the hash calculation/check to see if a file has changed. (Default = False)
+        /localpath     : Path of local folder to sync to blob storage. (String)
 
    Global Parameters:
         /debug     :
