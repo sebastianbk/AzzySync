@@ -1,4 +1,4 @@
-AzzySync
+AzzySync (v1.01)
 ========
 
 Command line tool to sync local folders with Azure blob storage. Right now this just does a one-way sync from a local folder into an Azure blob storage container.
@@ -8,12 +8,12 @@ Update (June 17, 2014)
 
 After constantly getting the *No valid combination of account information found* error, I forked to this to update the way of connecting to Azure blob storage. This also means that this client will always run over HTTPS.
 
-Examples
+Example
 ========
 
 This example works in a PowerShell console:
 
- 1. Sync C:\Misc\Screenshot\ to Azure blob storage: 
+ 1. Sync *C:\Misc\Screenshot\* to Azure blob storage: 
     
     ```PowerShell
     .\AzzySync.exe s /containerName:screenshots /localPath:"C:\Misc\Screenshot\" /accountname:"YOUR_STORAGE_ACCOUNT_NAME" /accountkey:"YOUR_STORAGE_ACCOUNT_KEY"
