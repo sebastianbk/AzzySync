@@ -3,6 +3,7 @@ AzzySync
 
 Command line tool to sync local folders with Azure blob storage. Right now this just does a one-way sync from a local folder into an Azure blob storage container.
 
+Forked by: sebastianbk
 
 Examples
 ========
